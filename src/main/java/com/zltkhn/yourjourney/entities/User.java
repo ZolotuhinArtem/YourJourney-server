@@ -5,12 +5,15 @@
  */
 package com.zltkhn.yourjourney.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -20,7 +23,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable{
 
     @Id
     @GeneratedValue(
@@ -79,6 +82,10 @@ public class User {
             unique = false
     )
     private String avatar;
+    
+     
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserToken token;
     
     
     public Long getId() {
@@ -197,6 +204,21 @@ public class User {
         }
         return true;
     }
+
+    public UserToken getToken() {
+        return token;
+    }
+
+    public void setToken(UserToken token) {
+        this.token = token;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", login=" + login + ", passwordCrypt=" + passwordCrypt + ", name=" + name + ", about=" + about + ", country=" + country + ", city=" + city + ", avatar=" + avatar + '}';
+    }
+    
+    
     
     
     

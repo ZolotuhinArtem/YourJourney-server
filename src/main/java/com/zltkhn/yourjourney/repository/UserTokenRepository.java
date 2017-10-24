@@ -5,8 +5,7 @@
  */
 package com.zltkhn.yourjourney.repository;
 
-import com.zltkhn.yourjourney.entities.User;
-import java.io.Serializable;
+import com.zltkhn.yourjourney.entities.UserToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,8 +14,10 @@ import org.springframework.stereotype.Repository;
  * @author rtmss
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>{
+public interface UserTokenRepository  extends JpaRepository<UserToken, Long>{
     
-    User findOneByLoginAndPasswordCrypt(String login, String passwordCrypt);
+    UserToken findOneByUserId(Long userId);
+    
+    UserToken findOneByAccessToken(String accessToken);
     
 }
