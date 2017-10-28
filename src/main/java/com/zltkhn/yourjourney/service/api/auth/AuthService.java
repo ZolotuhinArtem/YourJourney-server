@@ -5,10 +5,14 @@
  */
 package com.zltkhn.yourjourney.service.api.auth;
 
-import com.zltkhn.yourjourney.form.UserForm;
+import com.zltkhn.yourjourney.service.api.exception.DeadAccessTokenException;
+import com.zltkhn.yourjourney.service.api.exception.IncorrectLoginDataException;
+import com.zltkhn.yourjourney.service.api.exception.UserWithSameEmailAlreadyExistsException;
+import com.zltkhn.yourjourney.service.api.exception.IncorrectRegistrationFormException;
 import com.zltkhn.yourjourney.entities.User;
 import com.zltkhn.yourjourney.entities.UserToken;
 import com.zltkhn.yourjourney.form.LoginForm;
+import com.zltkhn.yourjourney.form.RegistrationForm;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,5 +30,6 @@ public interface AuthService {
     
     UserToken getToken(LoginForm loginForm) throws IncorrectLoginDataException;
     
-    UserToken registration(UserForm userForm) throws IncorrectUserFormException;
+    UserToken registration(RegistrationForm registrationForm) throws IncorrectRegistrationFormException,
+                                                                UserWithSameEmailAlreadyExistsException;
 }

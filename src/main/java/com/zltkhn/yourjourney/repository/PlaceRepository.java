@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.zltkhn.yourjourney.service.api.auth;
+package com.zltkhn.yourjourney.repository;
 
 /**
  *
  * @author rtmss
  */
-public class ApiResult {
-    public int code;
+public class PlaceRepository{
     
-    public Object body;
+    
+    
 }

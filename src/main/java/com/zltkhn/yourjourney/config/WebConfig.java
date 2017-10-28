@@ -1,6 +1,8 @@
 package com.zltkhn.yourjourney.config;
 
 
+import com.zltkhn.yourjourney.service.api.auth.AuthService;
+import com.zltkhn.yourjourney.service.api.auth.AuthServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -36,5 +38,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.defaultContentType(MediaType.APPLICATION_JSON);
     }
+    
+    
 
 }

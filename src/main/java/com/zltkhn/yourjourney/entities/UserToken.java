@@ -5,10 +5,13 @@
  */
 package com.zltkhn.yourjourney.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +19,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
 /**
  *
  * @author rtmss
@@ -25,6 +27,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "user_tokens")
 public class UserToken implements Serializable {
     
+    @JsonIgnore
     @Id
     @GeneratedValue(
             strategy = GenerationType.AUTO
@@ -36,10 +39,12 @@ public class UserToken implements Serializable {
     )
     private Long id;
     
-    @OneToOne
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     
+    @JsonProperty(value = "access_token")
     @NotNull
     @Column(
             name = "access_token",
@@ -47,6 +52,7 @@ public class UserToken implements Serializable {
     )
     private String accessToken;
     
+    @JsonProperty(value = "expires_in")
     @NotNull
     @Column(
             name = "expires_in",
@@ -54,6 +60,7 @@ public class UserToken implements Serializable {
     )
     private Long expiresIn;
     
+    @JsonProperty(value = "refresh_token")
     @NotNull
     @Column(
             name = "refresh_token",

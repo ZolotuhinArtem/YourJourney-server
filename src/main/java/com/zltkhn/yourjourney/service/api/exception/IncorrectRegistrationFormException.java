@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.zltkhn.yourjourney.service.api.auth;
+package com.zltkhn.yourjourney.service.api.exception;
 
 /**
  *
  * @author rtmss
  */
-public class IncorrectUserFormException extends Exception {
+public class IncorrectRegistrationFormException extends Exception {
 
     
     public static final int ERROR_CODE_INCORRECT_LOGIN_OR_PASSWORD = 1;
@@ -24,18 +24,18 @@ public class IncorrectUserFormException extends Exception {
     
     private int errorCode;
     
-    public IncorrectUserFormException() {
+    public IncorrectRegistrationFormException() {
     }
 
-    public IncorrectUserFormException(String message) {
+    public IncorrectRegistrationFormException(String message) {
         super(message);
     }
 
-    public IncorrectUserFormException(String message, Throwable cause) {
+    public IncorrectRegistrationFormException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public IncorrectUserFormException(Throwable cause) {
+    public IncorrectRegistrationFormException(Throwable cause) {
         super(cause);
     }
 

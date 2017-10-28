@@ -1,8 +1,6 @@
 package com.zltkhn.yourjourney.config;
 
 
-import com.zltkhn.yourjourney.service.Crypter;
-import com.zltkhn.yourjourney.service.Md5Crypter;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,11 +16,13 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.sql.DataSource;
 import java.util.Properties;
+import org.springframework.context.annotation.Import;
 
 @Configuration
 @EnableJpaRepositories(basePackages = {"com.zltkhn.yourjourney.repository"})
 @ComponentScan(basePackages = {"com.zltkhn.yourjourney.entities"})
 @PropertySource({"classpath:/app.properties"})
+@Import({ToolConfig.class, ValidatorConfig.class, ServiceConfig.class})
 public class RootConfig {
     @Autowired
     private Environment env;
@@ -67,10 +67,5 @@ public class RootConfig {
         properties.put("hibernate.hbm2ddl.auto", this.env.getRequiredProperty("hibernate.hbm2ddl.auto"));
         properties.put("hibernate.enable_lazy_load_no_trans", this.env.getRequiredProperty("hibernate.enable_lazy_load_no_trans"));
         return properties;
-    }
-    
-    @Bean 
-    public Crypter crypter() {
-        return new Md5Crypter(this.env.getProperty("crypter.soil"));
     }
 }
