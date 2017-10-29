@@ -8,7 +8,7 @@ package com.zltkhn.yourjourney.service.api;
 import com.zltkhn.yourjourney.service.api.exception.UserNotFoundException;
 import com.zltkhn.yourjourney.entities.User;
 import com.zltkhn.yourjourney.service.api.exception.DeadAccessTokenException;
-import com.zltkhn.yourjourney.service.api.response.UserResult;
+import com.zltkhn.yourjourney.service.api.response.ProfileResult;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,9 +20,9 @@ public interface UserService {
     
     User getById(Long id) throws UserNotFoundException;
     
-    User getByAccessToken(String accessToken) throws DeadAccessTokenException;
+    User getByAccessToken(String accessToken) throws DeadAccessTokenException, UserNotFoundException;
     
-    UserResult getPojoById(Long id) throws UserNotFoundException;
+    ProfileResult getPojoById(Long id) throws UserNotFoundException;
     
-    UserResult getPojoByAccessToken(String accessToken) throws DeadAccessTokenException;
+    ProfileResult getPojoByAccessToken(String accessToken) throws DeadAccessTokenException, UserNotFoundException;
 }

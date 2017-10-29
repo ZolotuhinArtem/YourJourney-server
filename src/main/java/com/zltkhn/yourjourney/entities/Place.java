@@ -70,8 +70,14 @@ public class Place {
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Comment> comments;
     
+    @NotNull
+    @Column(name = "private")
     private Boolean isPrivate;
-
+    
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<PlaceLike> likes;
+    
+    
     public Long getId() {
         return id;
     }
@@ -160,6 +166,16 @@ public class Place {
         this.isPrivate = isPrivate;
     }
 
+    public Set<PlaceLike> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Set<PlaceLike> likes) {
+        this.likes = likes;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 3;
@@ -217,4 +233,6 @@ public class Place {
         return true;
     }
 
+    
+    
 }

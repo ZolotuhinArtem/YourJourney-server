@@ -57,7 +57,7 @@ public class RegistrationForm {
     
     public User generateUser(Crypter crypter) {
         User user = new User();
-        user.setLogin(email);
+        user.setEmail(email);
         user.setPasswordCrypt(crypter.crypt(password));
         user.setName(name);
         return user;

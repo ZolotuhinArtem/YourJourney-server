@@ -16,6 +16,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -40,12 +43,11 @@ public class User implements Serializable{
     )
     private Long id;
 
-    @NotNull
     @Column(
-            name = "login",
+            name = "email",
             unique = true
     )
-    private String login;
+    private String email;
     
     @NotNull
     @Column(
@@ -100,6 +102,15 @@ public class User implements Serializable{
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Place> places;
     
+    @ManyToMany
+    @JoinTable(name = "user_friends", 
+          joinColumns = @JoinColumn(name = "user_id"), 
+          inverseJoinColumns = @JoinColumn(name = "friend_id"))
+    private Set<User> friends;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<PlaceLike> placeLikes;
+    
     public Long getId() {
         return id;
     }
@@ -108,12 +119,12 @@ public class User implements Serializable{
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String login) {
+        this.email = login;
     }
 
     public String getPasswordCrypt() {
@@ -172,13 +183,37 @@ public class User implements Serializable{
         this.comment = comment;
     }
 
+    public Set<Place> getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(Set<Place> places) {
+        this.places = places;
+    }
+
+    public Set<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(Set<User> friends) {
+        this.friends = friends;
+    }
+
+    public Set<PlaceLike> getPlaceLikes() {
+        return placeLikes;
+    }
+
+    public void setPlaceLikes(Set<PlaceLike> placeLikes) {
+        this.placeLikes = placeLikes;
+    }
+
     
     
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 47 * hash + Objects.hashCode(this.id);
-        hash = 47 * hash + Objects.hashCode(this.login);
+        hash = 47 * hash + Objects.hashCode(this.email);
         hash = 47 * hash + Objects.hashCode(this.passwordCrypt);
         hash = 47 * hash + Objects.hashCode(this.name);
         hash = 47 * hash + Objects.hashCode(this.about);
@@ -200,7 +235,7 @@ public class User implements Serializable{
             return false;
         }
         final User other = (User) obj;
-        if (!Objects.equals(this.login, other.login)) {
+        if (!Objects.equals(this.email, other.email)) {
             return false;
         }
         if (!Objects.equals(this.passwordCrypt, other.passwordCrypt)) {
@@ -237,11 +272,7 @@ public class User implements Serializable{
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", login=" + login + ", passwordCrypt=" + passwordCrypt + ", name=" + name + ", about=" + about + ", country=" + country + ", city=" + city + ", avatar=" + avatar + '}';
+        return "User{" + "id=" + id + ", login=" + email + ", passwordCrypt=" + passwordCrypt + ", name=" + name + ", about=" + about + ", country=" + country + ", city=" + city + ", avatar=" + avatar + '}';
     }
-    
-    
-    
-    
     
 }

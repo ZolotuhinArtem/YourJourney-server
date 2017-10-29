@@ -81,7 +81,7 @@ public class AuthServiceImpl implements AuthService{
     public UserToken getToken(LoginForm loginForm) throws IncorrectLoginDataException {
         int validation = loginFormValidator.validate(loginForm);
         if (validation == 0) {
-            User user = userRepository.findOneByLoginAndPasswordCrypt(loginForm.getLogin(), 
+            User user = userRepository.findOneByEmailAndPasswordCrypt(loginForm.getEmail(), 
                     crypter.crypt(loginForm.getPassword()));
             if (user != null) {
                 UserToken token = user.getToken();
@@ -109,7 +109,7 @@ public class AuthServiceImpl implements AuthService{
         if (!validation) {
             throw new IncorrectRegistrationFormException();
         } else {
-            User user = userRepository.findOneByLogin(registrationForm.getEmail());
+            User user = userRepository.findOneByEmail(registrationForm.getEmail());
             if (user != null) {
                 throw new UserWithSameEmailAlreadyExistsException();
             } else {

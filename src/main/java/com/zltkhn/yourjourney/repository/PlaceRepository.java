@@ -5,12 +5,20 @@
  */
 package com.zltkhn.yourjourney.repository;
 
+import com.zltkhn.yourjourney.entities.User;
+import java.util.Set;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
 /**
  *
  * @author rtmss
  */
-public class PlaceRepository{
+@Repository
+public interface PlaceRepository extends JpaRepository<User, Long>{
     
-    
+    @Query("SELECT p.id FROM Place p WHERE p.user = ?1")
+    Set<Long> findPlacesIdByUserId(User user);
     
 }

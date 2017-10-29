@@ -7,7 +7,9 @@ package com.zltkhn.yourjourney.repository;
 
 import com.zltkhn.yourjourney.entities.User;
 import java.io.Serializable;
+import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -17,8 +19,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
     
-    User findOneByLoginAndPasswordCrypt(String login, String passwordCrypt);
+    User findOneByEmailAndPasswordCrypt(String email, String passwordCrypt);
     
-    User findOneByLogin(String login);
+    User findOneByEmail(String email);
+            
     
 }

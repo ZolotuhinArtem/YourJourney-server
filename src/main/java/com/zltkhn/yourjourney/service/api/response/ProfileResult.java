@@ -12,11 +12,13 @@ import java.util.Set;
  *
  * @author rtmss
  */
-public class UserResult {
+public class ProfileResult {
     
     private Long id;
     
     private String name;
+    
+    private String email;
     
     private String about;
     
@@ -26,24 +28,16 @@ public class UserResult {
     @JsonProperty(value = "home_city")
     private String homeCity;
     
-    @JsonProperty(value = "place_created")
-    private int placeCreated;
-    
     private Set<Long> places;
+    
+    private Set<Long> friends;
 
-    public UserResult(Long id, String name, String about, String homeCountry, String homeCity, int placeCreated, Set<Long> places) {
-        this.id = id;
-        this.name = name;
-        this.about = about;
-        this.homeCountry = homeCountry;
-        this.homeCity = homeCity;
-        this.placeCreated = placeCreated;
-        this.places = places;
+    @JsonProperty(value = "liked_places")
+    private Set<Long> likedPlaces;
+
+    public ProfileResult() {
     }
-
-    public UserResult() {
-    }
-
+    
     public Long getId() {
         return id;
     }
@@ -84,14 +78,6 @@ public class UserResult {
         this.homeCity = homeCity;
     }
 
-    public int getPlaceCreated() {
-        return placeCreated;
-    }
-
-    public void setPlaceCreated(int placeCreated) {
-        this.placeCreated = placeCreated;
-    }
-
     public Set<Long> getPlaces() {
         return places;
     }
@@ -99,7 +85,30 @@ public class UserResult {
     public void setPlaces(Set<Long> places) {
         this.places = places;
     }
-    
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Set<Long> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(Set<Long> friends) {
+        this.friends = friends;
+    }
+
+    public Set<Long> getLikedPlaces() {
+        return likedPlaces;
+    }
+
+    public void setLikedPlaces(Set<Long> likedPlaces) {
+        this.likedPlaces = likedPlaces;
+    }
     
     
     

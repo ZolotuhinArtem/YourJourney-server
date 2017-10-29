@@ -20,6 +20,7 @@ import org.springframework.core.env.Environment;
  */
 @Configuration
 @PropertySource({"classpath:/app.properties"})
+@ComponentScan(basePackages = {"com.zltkhn.yourjourney.tools"})
 public class ToolConfig {
     
     @Autowired

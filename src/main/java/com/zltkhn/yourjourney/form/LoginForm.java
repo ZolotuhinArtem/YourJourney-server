@@ -11,7 +11,7 @@ package com.zltkhn.yourjourney.form;
  */
 public class LoginForm {
     
-    private String login;
+    private String email;
     
     private String password;
 
@@ -19,16 +19,16 @@ public class LoginForm {
     }
 
     public LoginForm(String email, String password) {
-        this.login = email;
+        this.email = email;
         this.password = password;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String email) {
-        this.login = email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

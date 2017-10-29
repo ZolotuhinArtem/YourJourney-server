@@ -9,9 +9,11 @@ import com.zltkhn.yourjourney.entities.User;
 import com.zltkhn.yourjourney.entities.UserToken;
 import com.zltkhn.yourjourney.repository.UserRepository;
 import com.zltkhn.yourjourney.repository.UserTokenRepository;
+import com.zltkhn.yourjourney.service.api.auth.AuthService;
 import com.zltkhn.yourjourney.service.api.exception.DeadAccessTokenException;
 import com.zltkhn.yourjourney.service.api.exception.UserNotFoundException;
-import com.zltkhn.yourjourney.service.api.response.UserResult;
+import com.zltkhn.yourjourney.service.api.response.ProfileResult;
+import com.zltkhn.yourjourney.tools.UserToProfileResultConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,12 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserTokenRepository userTokenRepository;
     
+    @Autowired
+    private AuthService authService;
+    
+    @Autowired
+    private UserToProfileResultConverter userToProfileResultConverter;
+    
     @Override
     public User getById(Long id) throws UserNotFoundException {
         if (id == null) {
@@ -42,7 +50,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User getByAccessToken(String accessToken) throws DeadAccessTokenException {
+    public User getByAccessToken(String accessToken) throws DeadAccessTokenException, UserNotFoundException {
         if (accessToken == null) {
             throw  new DeadAccessTokenException();
         }
@@ -54,7 +62,7 @@ public class UserServiceImpl implements UserService{
                 if (user != null) {
                     return user;
                 } else {
-                    throw new DeadAccessTokenException();
+                    throw new UserNotFoundException();
                 }
             } else {
                 throw new DeadAccessTokenException();
@@ -65,13 +73,41 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserResult getPojoById(Long id) throws UserNotFoundException {
+    public ProfileResult getPojoById(Long id) throws UserNotFoundException {
         return null;
     }
 
     @Override
-    public UserResult getPojoByAccessToken(String accessToken) throws DeadAccessTokenException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ProfileResult getPojoByAccessToken(String accessToken) throws DeadAccessTokenException, UserNotFoundException {
+        if (authService.isAccessTokenActive(accessToken)) {
+            UserToken userToken = userTokenRepository.findOneByAccessToken(accessToken);
+            if (userToken != null) {
+                
+                User user = userToken.getUser();
+                
+                if (user != null) {
+                    
+                    ProfileResult profileResult = userToProfileResultConverter.convert(user);
+                    
+                    if (profileResult != null) {
+                        
+                        return profileResult;
+                        
+                    } else {
+                        throw new UserNotFoundException();
+                    }
+                    
+                } else {
+                    throw new UserNotFoundException();
+                }
+                
+            } else {
+                throw new DeadAccessTokenException();
+            }
+        } else {
+            throw new DeadAccessTokenException();
+        }
+        
     }
     
 }

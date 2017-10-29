@@ -5,7 +5,6 @@
  */
 package com.zltkhn.yourjourney.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -24,8 +23,12 @@ import javax.validation.constraints.NotNull;
  * @author rtmss
  */
 @Entity
-@Table(name = "place_comments")
-public class Comment implements Serializable{
+@Table(name = "place_likes")
+public class PlaceLike implements Serializable{
+//    id BIGSERIAL,
+//    user_id BIGINT NOT NULL,
+//    place_id BIGINT NOT NULL,
+//    like_date BIGINT DEFAULT 0,
     
     @Id
     @GeneratedValue(
@@ -38,21 +41,19 @@ public class Comment implements Serializable{
     )
     private Long id;
     
-    @Column(name = "comment_date")
-    private Long commentDate;
-    
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "user_id")
     private User user;
     
-    @Column(name = "body")
-    private String body;
-    
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
+    
+    @Column(
+            name = "like_date",
+            unique = true
+    )
+    private Long date;
 
     public Long getId() {
         return id;
@@ -60,14 +61,6 @@ public class Comment implements Serializable{
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getCommentDate() {
-        return commentDate;
-    }
-
-    public void setCommentDate(Long commentDate) {
-        this.commentDate = commentDate;
     }
 
     public User getUser() {
@@ -78,14 +71,6 @@ public class Comment implements Serializable{
         this.user = user;
     }
 
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
     public Place getPlace() {
         return place;
     }
@@ -94,12 +79,19 @@ public class Comment implements Serializable{
         this.place = place;
     }
 
+    public Long getDate() {
+        return date;
+    }
+
+    public void setDate(Long date) {
+        this.date = date;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.id);
-        hash = 59 * hash + Objects.hashCode(this.commentDate);
-        hash = 59 * hash + Objects.hashCode(this.body);
+        hash = 19 * hash + Objects.hashCode(this.id);
+        hash = 19 * hash + Objects.hashCode(this.date);
         return hash;
     }
 
@@ -114,17 +106,16 @@ public class Comment implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Comment other = (Comment) obj;
-        if (!Objects.equals(this.body, other.body)) {
-            return false;
-        }
+        final PlaceLike other = (PlaceLike) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.commentDate, other.commentDate)) {
+        if (!Objects.equals(this.date, other.date)) {
             return false;
         }
         return true;
     }
+    
+    
     
 }

@@ -5,7 +5,14 @@
  */
 package com.zltkhn.yourjourney.controller;
 
+import com.zltkhn.yourjourney.service.api.ErrorCodes;
+import com.zltkhn.yourjourney.service.api.UserService;
+import com.zltkhn.yourjourney.service.api.exception.DeadAccessTokenException;
+import com.zltkhn.yourjourney.service.api.exception.UserNotFoundException;
 import com.zltkhn.yourjourney.service.api.response.ApiResult;
+import com.zltkhn.yourjourney.service.api.response.ProfileResult;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,15 +28,33 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     
     @Autowired
-    private AuthController authController;
+    private ErrorCodes errorCodes;
+    
+    @Autowired
+    private UserService userService;
     
     @RequestMapping(value = "/profile")
     public ApiResult profile(@RequestHeader(name = "token", required = true) String token,
             @RequestParam(name = "places", required = false, defaultValue = "0") int places) {
         
+        ApiResult apiResult = new ApiResult(errorCodes.getSuccess());
         
-        
-        return null;
+        try {
+            ProfileResult profileResult = userService.getPojoByAccessToken(token);
+            if (profileResult != null) {
+                apiResult.setBody(profileResult);
+            } else {
+                apiResult.setCode(errorCodes.getNotFound());
+            }
+        } catch (DeadAccessTokenException ex) {
+            apiResult.setCode(errorCodes.getInvalidOrOldAccessToken());
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserNotFoundException ex) {
+            apiResult.setCode(errorCodes.getNotFound());
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        return apiResult;
     }
     
 }
