@@ -73,8 +73,22 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ProfileResult getPojoById(Long id) throws UserNotFoundException {
-        return null;
+    public ProfileResult getPojoById(Long id, boolean showPlaces) throws UserNotFoundException {
+        
+        User user = userRepository.findOne(id);
+        
+        if (user != null) {
+            ProfileResult profileResult = userToProfileResultConverter.convert(user, showPlaces, false, true);
+            
+            if (profileResult != null) {
+                return profileResult;
+            } else {
+                throw new UserNotFoundException(ProfileResult.class.getName() + " is null");
+            }
+        } else {
+            throw new UserNotFoundException();
+        }
+        
     }
 
     @Override
@@ -87,7 +101,7 @@ public class UserServiceImpl implements UserService{
                 
                 if (user != null) {
                     
-                    ProfileResult profileResult = userToProfileResultConverter.convert(user);
+                    ProfileResult profileResult = userToProfileResultConverter.convert(user, true, true, false);
                     
                     if (profileResult != null) {
                         

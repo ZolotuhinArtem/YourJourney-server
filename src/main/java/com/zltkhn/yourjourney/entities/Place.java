@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -77,6 +78,12 @@ public class Place {
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<PlaceLike> likes;
     
+    @PrePersist
+    public void prePersist() {
+        if (getIsPrivate() == null){
+            setIsPrivate(false);
+        }
+    }
     
     public Long getId() {
         return id;

@@ -14,6 +14,7 @@ import com.zltkhn.yourjourney.service.api.response.ProfileResult;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,8 +35,7 @@ public class UserController {
     private UserService userService;
     
     @RequestMapping(value = "/profile")
-    public ApiResult profile(@RequestHeader(name = "token", required = true) String token,
-            @RequestParam(name = "places", required = false, defaultValue = "0") int places) {
+    public ApiResult profile(@RequestHeader(name = "token", required = true) String token) {
         
         ApiResult apiResult = new ApiResult(errorCodes.getSuccess());
         
@@ -49,6 +49,26 @@ public class UserController {
         } catch (DeadAccessTokenException ex) {
             apiResult.setCode(errorCodes.getInvalidOrOldAccessToken());
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserNotFoundException ex) {
+            apiResult.setCode(errorCodes.getNotFound());
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        return apiResult;
+    }
+    
+    @RequestMapping(value = "/tourists/{id}")
+    public ApiResult tourist(@PathVariable("id") long id, @RequestParam(name = "places", required = false, defaultValue = "0") int places) {
+        
+        ApiResult apiResult = new ApiResult(errorCodes.getSuccess());
+                
+        try {
+            ProfileResult profileResult = userService.getPojoById(id, places == 1 ? true : false);
+            if (profileResult != null) {
+                apiResult.setBody(profileResult);
+            } else {
+                apiResult.setCode(errorCodes.getNotFound());
+            }
         } catch (UserNotFoundException ex) {
             apiResult.setCode(errorCodes.getNotFound());
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);

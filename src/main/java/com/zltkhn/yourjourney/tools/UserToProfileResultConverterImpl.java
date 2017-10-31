@@ -27,7 +27,7 @@ public class UserToProfileResultConverterImpl implements UserToProfileResultConv
     private PlaceRepository placeRepository;
     
     @Override
-    public ProfileResult convert(User user) {
+    public ProfileResult convert(User user, boolean showPlaces, boolean showLikedPlaces, boolean hidePrivatePlaces) {
         if (user != null) {
             ProfileResult profileResult = new ProfileResult();
             profileResult.setId(user.getId());
@@ -36,7 +36,16 @@ public class UserToProfileResultConverterImpl implements UserToProfileResultConv
             profileResult.setHomeCity(user.getCity());
             profileResult.setHomeCountry(user.getCountry());
             profileResult.setName(user.getName());
-            profileResult.setPlaces(placeRepository.findPlacesIdByUserId(user));
+            profileResult.setGender(user.getGender());
+            if (showPlaces) {
+                Set<Long> places;
+                if (hidePrivatePlaces) {
+                    places = placeRepository.findPlacesIdByUserIdAndPrivate(user, !hidePrivatePlaces);
+                } else {
+                    places = placeRepository.findPlacesIdByUserId(user);
+                }
+                profileResult.setPlaces(places);
+            }
             
             Set<User> friends = user.getFriends();
             Set<Long> frienIds = new HashSet<>();
@@ -47,22 +56,26 @@ public class UserToProfileResultConverterImpl implements UserToProfileResultConv
                     }
                 }
             }
-            profileResult.setFriends(frienIds);
             
-            Set<PlaceLike> placeLikes = user.getPlaceLikes();
-            Set<Long> likedPlaces = new HashSet<>();
-            Place place;
-            if (placeLikes != null) {
-                for (PlaceLike p : placeLikes) {
-                    if (p != null) {
-                        place = p.getPlace();
-                        if (place != null) {
-                            likedPlaces.add(place.getId());
+            profileResult.setFriends(frienIds);
+            if (showLikedPlaces) {
+                Set<PlaceLike> placeLikes = user.getPlaceLikes();
+                Set<Long> likedPlaces = new HashSet<>();
+                Place place;
+                if (placeLikes != null) {
+                    for (PlaceLike p : placeLikes) {
+                        if (p != null) {
+                            place = p.getPlace();
+                            if (place != null) {
+                                if (!(hidePrivatePlaces && (place.getIsPrivate() == null ? false : place.getIsPrivate()))) {
+                                    likedPlaces.add(place.getId());
+                                }
+                            }
                         }
                     }
                 }
+                profileResult.setLikedPlaces(likedPlaces);
             }
-            profileResult.setLikedPlaces(likedPlaces);
             
             return profileResult;
             

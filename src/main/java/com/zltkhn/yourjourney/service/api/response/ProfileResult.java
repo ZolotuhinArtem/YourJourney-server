@@ -5,6 +5,8 @@
  */
 package com.zltkhn.yourjourney.service.api.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Set;
 
@@ -20,20 +22,28 @@ public class ProfileResult {
     
     private String email;
     
+    @JsonInclude(Include.NON_NULL)
     private String about;
     
+    @JsonInclude(Include.NON_NULL)
     @JsonProperty(value = "home_country")
     private String homeCountry;
     
+    @JsonInclude(Include.NON_NULL)
     @JsonProperty(value = "home_city")
     private String homeCity;
     
+    @JsonInclude(Include.NON_NULL)
     private Set<Long> places;
     
     private Set<Long> friends;
 
     @JsonProperty(value = "liked_places")
     private Set<Long> likedPlaces;
+    
+    
+    @JsonProperty(defaultValue = "none")
+    private String gender;
 
     public ProfileResult() {
     }
@@ -109,7 +119,12 @@ public class ProfileResult {
     public void setLikedPlaces(Set<Long> likedPlaces) {
         this.likedPlaces = likedPlaces;
     }
-    
-    
-    
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }    
 }

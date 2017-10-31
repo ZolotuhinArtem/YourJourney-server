@@ -21,6 +21,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -89,6 +90,10 @@ public class User implements Serializable{
     )
     private String avatar;
     
+    
+    @Column(name = "gender")
+    private String gender;
+    
     @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserToken token;
@@ -110,6 +115,13 @@ public class User implements Serializable{
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<PlaceLike> placeLikes;
+    
+    @PrePersist
+    public void prePersist() {
+        if (getGender()== null){
+            setGender("none");
+        }
+    }
     
     public Long getId() {
         return id;
@@ -207,19 +219,26 @@ public class User implements Serializable{
         this.placeLikes = placeLikes;
     }
 
-    
-    
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 47 * hash + Objects.hashCode(this.id);
-        hash = 47 * hash + Objects.hashCode(this.email);
-        hash = 47 * hash + Objects.hashCode(this.passwordCrypt);
-        hash = 47 * hash + Objects.hashCode(this.name);
-        hash = 47 * hash + Objects.hashCode(this.about);
-        hash = 47 * hash + Objects.hashCode(this.country);
-        hash = 47 * hash + Objects.hashCode(this.city);
-        hash = 47 * hash + Objects.hashCode(this.avatar);
+        hash = 23 * hash + Objects.hashCode(this.id);
+        hash = 23 * hash + Objects.hashCode(this.email);
+        hash = 23 * hash + Objects.hashCode(this.passwordCrypt);
+        hash = 23 * hash + Objects.hashCode(this.name);
+        hash = 23 * hash + Objects.hashCode(this.about);
+        hash = 23 * hash + Objects.hashCode(this.country);
+        hash = 23 * hash + Objects.hashCode(this.city);
+        hash = 23 * hash + Objects.hashCode(this.avatar);
+        hash = 23 * hash + Objects.hashCode(this.gender);
         return hash;
     }
 
@@ -256,11 +275,16 @@ public class User implements Serializable{
         if (!Objects.equals(this.avatar, other.avatar)) {
             return false;
         }
+        if (!Objects.equals(this.gender, other.gender)) {
+            return false;
+        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;
     }
+
+    
 
     public UserToken getToken() {
         return token;

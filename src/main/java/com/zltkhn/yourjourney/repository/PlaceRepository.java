@@ -21,4 +21,7 @@ public interface PlaceRepository extends JpaRepository<User, Long>{
     @Query("SELECT p.id FROM Place p WHERE p.user = ?1")
     Set<Long> findPlacesIdByUserId(User user);
     
+    @Query("SELECT p.id FROM Place p WHERE p.user = ?1 AND p.isPrivate = ?2")
+    Set<Long> findPlacesIdByUserIdAndPrivate(User user, Boolean isPrivate);
+    
 }

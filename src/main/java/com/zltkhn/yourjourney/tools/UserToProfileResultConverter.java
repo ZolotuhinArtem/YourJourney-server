@@ -20,6 +20,6 @@ public interface UserToProfileResultConverter {
      * @param user
      * @return null if user is null
      */
-    ProfileResult convert(User user);
+    ProfileResult convert(User user, boolean showPlaces,  boolean showLikedPlaces, boolean hidePrivatePlaces);
     
 }

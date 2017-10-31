@@ -22,7 +22,7 @@ public interface UserService {
     
     User getByAccessToken(String accessToken) throws DeadAccessTokenException, UserNotFoundException;
     
-    ProfileResult getPojoById(Long id) throws UserNotFoundException;
+    ProfileResult getPojoById(Long id, boolean showPlaces) throws UserNotFoundException;
     
     ProfileResult getPojoByAccessToken(String accessToken) throws DeadAccessTokenException, UserNotFoundException;
 }
