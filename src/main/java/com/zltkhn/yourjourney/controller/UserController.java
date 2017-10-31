@@ -5,7 +5,9 @@
  */
 package com.zltkhn.yourjourney.controller;
 
+import com.zltkhn.yourjourney.form.EditProfileForm;
 import com.zltkhn.yourjourney.service.api.ErrorCodes;
+import com.zltkhn.yourjourney.service.api.InvalidFormException;
 import com.zltkhn.yourjourney.service.api.UserService;
 import com.zltkhn.yourjourney.service.api.exception.DeadAccessTokenException;
 import com.zltkhn.yourjourney.service.api.exception.UserNotFoundException;
@@ -15,8 +17,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,6 +58,28 @@ public class UserController {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
        
+        return apiResult;
+    }
+    
+    @RequestMapping(value = "/profile", method = RequestMethod.PUT) 
+    public ApiResult editProfile(@RequestHeader(name = "token", required = true) String token,
+            @RequestBody EditProfileForm editProfileForm) {
+        
+        ApiResult apiResult = new ApiResult(errorCodes.getSuccess());
+        
+        try {
+            userService.editUser(token, editProfileForm);
+        } catch (DeadAccessTokenException ex) {
+            apiResult.setCode(errorCodes.getInvalidOrOldAccessToken());
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserNotFoundException ex) {
+            apiResult.setCode(errorCodes.getNotFound());
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidFormException ex) {
+            apiResult.setCode(errorCodes.getInvalidForm());
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         return apiResult;
     }
     

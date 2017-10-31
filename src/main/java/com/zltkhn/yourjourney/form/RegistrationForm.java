@@ -7,9 +7,6 @@ package com.zltkhn.yourjourney.form;
 
 import com.zltkhn.yourjourney.entities.User;
 import com.zltkhn.yourjourney.service.Crypter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  *
  * @author rtmss

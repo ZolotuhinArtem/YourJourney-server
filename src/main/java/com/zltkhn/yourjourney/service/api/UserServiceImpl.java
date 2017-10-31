@@ -7,8 +7,11 @@ package com.zltkhn.yourjourney.service.api;
 
 import com.zltkhn.yourjourney.entities.User;
 import com.zltkhn.yourjourney.entities.UserToken;
+import com.zltkhn.yourjourney.form.EditProfileForm;
+import com.zltkhn.yourjourney.form.validator.EditProfileFormValidator;
 import com.zltkhn.yourjourney.repository.UserRepository;
 import com.zltkhn.yourjourney.repository.UserTokenRepository;
+import com.zltkhn.yourjourney.service.Crypter;
 import com.zltkhn.yourjourney.service.api.auth.AuthService;
 import com.zltkhn.yourjourney.service.api.exception.DeadAccessTokenException;
 import com.zltkhn.yourjourney.service.api.exception.UserNotFoundException;
@@ -35,6 +38,12 @@ public class UserServiceImpl implements UserService{
     
     @Autowired
     private UserToProfileResultConverter userToProfileResultConverter;
+    
+    @Autowired
+    private EditProfileFormValidator editProfileFormValidator;
+    
+    @Autowired
+    private Crypter crypter;
     
     @Override
     public User getById(Long id) throws UserNotFoundException {
@@ -120,6 +129,60 @@ public class UserServiceImpl implements UserService{
             }
         } else {
             throw new DeadAccessTokenException();
+        }
+        
+    }
+
+    @Override
+    public void editUser(String accessToken, EditProfileForm editProfileForm) 
+            throws DeadAccessTokenException, UserNotFoundException, InvalidFormException {
+        if (editProfileFormValidator.validate(editProfileForm)) {
+            if (authService.isAccessTokenActive(accessToken)) {
+                User user = authService.getUserByAccessToken(accessToken);
+                
+                if (editProfileForm.getPasswordOld() != null) {
+                    if (!crypter.crypt(editProfileForm.getPasswordOld())
+                            .equals(user.getPasswordCrypt())) {
+                        throw new InvalidFormException();
+                    }
+                }
+               
+                updateUserFromEditeProfileForm(user, editProfileForm);
+                
+            } else {
+                new DeadAccessTokenException();
+            }
+        } else {
+            throw new InvalidFormException();
+        }
+    }
+    
+    private void updateUserFromEditeProfileForm(User user, EditProfileForm epf) {
+        if (epf.getName() != null) {
+            user.setName(epf.getName());
+        }
+        
+        if (epf.getEmail() != null) {
+            user.setName(epf.getEmail());
+        }
+        
+        if (epf.getAbout() != null) {
+            user.setName(epf.getAbout());
+        }
+        
+        if (epf.getGender() != null) {
+            user.setGender(epf.getGender());
+        }
+        
+        if (epf.getHomeCountry() != null) {
+            user.setCountry(epf.getHomeCountry());
+        }
+        
+        if (epf.getHomeCity() != null) {
+            user.setCity(epf.getHomeCity());
+        }
+        if (epf.getPasswordNew() != null) {
+            user.setPasswordCrypt(crypter.crypt(epf.getPasswordNew()));
         }
         
     }

@@ -119,7 +119,7 @@ public class User implements Serializable{
     @PrePersist
     public void prePersist() {
         if (getGender()== null){
-            setGender("none");
+            setGender(Gender.NONE);
         }
     }
     
