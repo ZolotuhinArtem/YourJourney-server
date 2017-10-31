@@ -5,7 +5,6 @@
  */
 package com.zltkhn.yourjourney.controller;
 
-import com.zltkhn.yourjourney.entities.TestModel;
 import com.zltkhn.yourjourney.entities.User;
 import com.zltkhn.yourjourney.entities.UserToken;
 import com.zltkhn.yourjourney.form.LoginForm;

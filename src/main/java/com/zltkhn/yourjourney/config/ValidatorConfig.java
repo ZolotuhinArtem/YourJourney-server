@@ -5,6 +5,8 @@
  */
 package com.zltkhn.yourjourney.config;
 
+import com.zltkhn.yourjourney.form.validator.EditProfileFormValidator;
+import com.zltkhn.yourjourney.form.validator.EditProfileFormValidatorImpl;
 import com.zltkhn.yourjourney.form.validator.RegistrationFormValidator;
 import com.zltkhn.yourjourney.form.validator.RegistrationFormValidatorImpl;
 import com.zltkhn.yourjourney.tools.EmailValidator;
@@ -25,5 +27,11 @@ public class ValidatorConfig {
     @Bean
     public RegistrationFormValidator registrationFormValidator(EmailValidator emailValidator) {
         return new RegistrationFormValidatorImpl(1, 128, 5, 256, 8, 256, emailValidator);
+    }
+    
+    @Autowired
+    @Bean
+    public EditProfileFormValidator editProfileFormValidator(EmailValidator emailValidator) {
+        return new EditProfileFormValidatorImpl(1, 64, 5, 256, 8, 256, 0, 1024, 0, 64, 0, 64, emailValidator);
     }
 }

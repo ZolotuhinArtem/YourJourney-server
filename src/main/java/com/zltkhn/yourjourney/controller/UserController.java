@@ -63,7 +63,7 @@ public class UserController {
         ApiResult apiResult = new ApiResult(errorCodes.getSuccess());
                 
         try {
-            ProfileResult profileResult = userService.getPojoById(id, places == 1 ? true : false);
+            ProfileResult profileResult = userService.getPojoById(id, (places == 1));
             if (profileResult != null) {
                 apiResult.setBody(profileResult);
             } else {
@@ -76,5 +76,7 @@ public class UserController {
        
         return apiResult;
     }
+    
+    
     
 }
