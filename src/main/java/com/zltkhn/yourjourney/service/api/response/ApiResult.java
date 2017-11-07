@@ -5,6 +5,8 @@
  */
 package com.zltkhn.yourjourney.service.api.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  *
  * @author rtmss
@@ -13,6 +15,7 @@ public class ApiResult {
     
     private int code;
     
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object body;
 
     public ApiResult(int code, Object body) {

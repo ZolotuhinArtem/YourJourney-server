@@ -185,6 +185,8 @@ public class UserServiceImpl implements UserService{
             user.setPasswordCrypt(crypter.crypt(epf.getPasswordNew()));
         }
         
+        userRepository.save(user);
+        
     }
     
 }

@@ -61,7 +61,8 @@ public class UserController {
         return apiResult;
     }
     
-    @RequestMapping(value = "/profile", method = RequestMethod.PUT) 
+    //TODO PUT
+    @RequestMapping(value = "/profile", method = RequestMethod.POST) 
     public ApiResult editProfile(@RequestHeader(name = "token", required = true) String token,
             @RequestBody EditProfileForm editProfileForm) {
         

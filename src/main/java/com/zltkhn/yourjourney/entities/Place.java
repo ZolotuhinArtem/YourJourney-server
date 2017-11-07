@@ -78,6 +78,9 @@ public class Place {
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<PlaceLike> likes;
     
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<PlacePhoto> photos;
+    
     @PrePersist
     public void prePersist() {
         if (getIsPrivate() == null){
@@ -238,6 +241,14 @@ public class Place {
             return false;
         }
         return true;
+    }
+
+    public Set<PlacePhoto> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Set<PlacePhoto> photos) {
+        this.photos = photos;
     }
 
     

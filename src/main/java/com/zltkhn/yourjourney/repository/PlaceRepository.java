@@ -5,6 +5,7 @@
  */
 package com.zltkhn.yourjourney.repository;
 
+import com.zltkhn.yourjourney.entities.Place;
 import com.zltkhn.yourjourney.entities.User;
 import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,5 +24,8 @@ public interface PlaceRepository extends JpaRepository<User, Long>{
     
     @Query("SELECT p.id FROM Place p WHERE p.user = ?1 AND p.isPrivate = ?2")
     Set<Long> findPlacesIdByUserIdAndPrivate(User user, Boolean isPrivate);
+    
+    @Query("SELECT p FROM Place p WHERE LOWER(p.country) = LOWER(?1) AND LOWER(p.city) = LOWER(?2) AND p.isPrivate = ?3")
+    Set<Place> findPlacesByCountryAndCityAndPrivate(String country, String city, Boolean isPrivate);
     
 }
