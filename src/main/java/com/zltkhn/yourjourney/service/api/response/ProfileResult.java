@@ -127,4 +127,11 @@ public class ProfileResult {
     public void setGender(String gender) {
         this.gender = gender;
     }    
+
+    @Override
+    public String toString() {
+        return "ProfileResult{" + "id=" + id + ", name=" + name + ", email=" + email + ", about=" + about + ", homeCountry=" + homeCountry + ", homeCity=" + homeCity + ", places=" + places + ", friends=" + friends + ", likedPlaces=" + likedPlaces + ", gender=" + gender + '}';
+    }
+    
+    
 }

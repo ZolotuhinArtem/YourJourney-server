@@ -114,7 +114,11 @@ public class EditProfileForm {
     public void setPasswordNew(String passwordNew) {
         this.passwordNew = passwordNew;
     }
-    
-    
 
+    @Override
+    public String toString() {
+        return "EditProfileForm{" + "about=" + about + ", gender=" + gender + ", name=" + name + ", homeCountry=" + homeCountry + ", homeCity=" + homeCity + ", email=" + email + ", passwordOld=" + passwordOld + ", passwordNew=" + passwordNew + '}';
+    }
+    
+    
 }

@@ -6,7 +6,9 @@
 package com.zltkhn.yourjourney.service.api;
 
 import com.zltkhn.yourjourney.entities.User;
-import com.zltkhn.yourjourney.service.api.response.PlacesResult;
+import com.zltkhn.yourjourney.service.api.exception.PermissionDeniedException;
+import com.zltkhn.yourjourney.service.api.response.PlaceResult;
+import com.zltkhn.yourjourney.service.api.response.PlacesShortResult;
 
 /**
  *
@@ -22,6 +24,14 @@ public interface PlaceService {
      * @param userWhoBrowses can be null
      * @return DOES NOT RETURN PRIVATE PLACES!
      */
-    PlacesResult getShortInfoPlacesByLocation(String country, String city, User userWhoBrowses) throws IllegalArgumentException;
+    PlacesShortResult getShortInfoPlacesByLocation(String country, String city, User userWhoBrowses) throws IllegalArgumentException;
+    
+    /**
+     * 
+     * @param id
+     * @param userWhoBrowses can be null
+     * @return null if not exists
+     */
+    PlaceResult getPlace(long id, User userWhoBrowses) throws PermissionDeniedException;
     
 }

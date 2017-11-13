@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
  * @author rtmss
  */
 @Repository
-public interface PlaceRepository extends JpaRepository<User, Long>{
+public interface PlaceRepository extends JpaRepository<Place, Long>{
     
     @Query("SELECT p.id FROM Place p WHERE p.user = ?1")
     Set<Long> findPlacesIdByUserId(User user);

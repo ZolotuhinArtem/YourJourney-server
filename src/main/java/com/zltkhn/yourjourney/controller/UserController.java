@@ -38,14 +38,16 @@ public class UserController {
     @Autowired
     private UserService userService;
     
-    @RequestMapping(value = "/profile")
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public ApiResult profile(@RequestHeader(name = "token", required = true) String token) {
+        System.out.println("PROFILE");
         
         ApiResult apiResult = new ApiResult(errorCodes.getSuccess());
         
         try {
             ProfileResult profileResult = userService.getPojoByAccessToken(token);
             if (profileResult != null) {
+                System.out.println(profileResult.toString());
                 apiResult.setBody(profileResult);
             } else {
                 apiResult.setCode(errorCodes.getNotFound());
@@ -62,7 +64,7 @@ public class UserController {
     }
     
     //TODO PUT
-    @RequestMapping(value = "/profile", method = RequestMethod.POST) 
+    @RequestMapping(value = "/profile", method = RequestMethod.PUT) 
     public ApiResult editProfile(@RequestHeader(name = "token", required = true) String token,
             @RequestBody EditProfileForm editProfileForm) {
         

@@ -11,17 +11,15 @@ import java.util.Set;
  *
  * @author rtmss
  */
-public class PlacesResult {
+public class PlacesShortResult {
     
-    private Set<PlaceResult> places;
+    private Set<PlaceShortResult> places;
 
-    public Set<PlaceResult> getPlaces() {
+    public Set<PlaceShortResult> getPlaces() {
         return places;
     }
 
-    public void setPlaces(Set<PlaceResult> places) {
+    public void setPlaces(Set<PlaceShortResult> places) {
         this.places = places;
     }
-    
-    
 }

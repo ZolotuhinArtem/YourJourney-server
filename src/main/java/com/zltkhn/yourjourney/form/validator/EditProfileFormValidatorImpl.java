@@ -54,6 +54,9 @@ public class EditProfileFormValidatorImpl implements EditProfileFormValidator{
     
     @Override
     public boolean validate(EditProfileForm epf) {
+        
+        System.out.println(epf.toString());
+        
         if (epf == null) {
             return false;
         } 

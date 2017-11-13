@@ -16,7 +16,7 @@ import com.zltkhn.yourjourney.service.api.auth.AuthService;
 import com.zltkhn.yourjourney.service.api.exception.DeadAccessTokenException;
 import com.zltkhn.yourjourney.service.api.exception.UserNotFoundException;
 import com.zltkhn.yourjourney.service.api.response.ProfileResult;
-import com.zltkhn.yourjourney.tools.UserToProfileResultConverter;
+import com.zltkhn.yourjourney.service.api.converter.UserToProfileResultConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -163,11 +163,11 @@ public class UserServiceImpl implements UserService{
         }
         
         if (epf.getEmail() != null) {
-            user.setName(epf.getEmail());
+            user.setEmail(epf.getEmail());
         }
         
         if (epf.getAbout() != null) {
-            user.setName(epf.getAbout());
+            user.setAbout(epf.getAbout());
         }
         
         if (epf.getGender() != null) {
