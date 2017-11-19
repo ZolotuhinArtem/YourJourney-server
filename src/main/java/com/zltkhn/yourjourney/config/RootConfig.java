@@ -17,8 +17,11 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import javax.sql.DataSource;
 import java.util.Properties;
 import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration;
+import javax.servlet.annotation.MultipartConfig;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 @Configuration
 @EnableJpaRepositories(basePackages = {"com.zltkhn.yourjourney.repository"})
@@ -28,6 +31,7 @@ import org.springframework.context.annotation.Import;
 public class RootConfig {
     @Autowired
     private Environment env;
+    
 
     public RootConfig() {
     }
@@ -71,11 +75,4 @@ public class RootConfig {
         return properties;
     }
     
-    @Bean
-    public MultipartConfigElement multipartConfigElement() {
-        MultipartConfigFactory factory = new MultipartConfigFactory();
-        factory.setMaxFileSize("5120KB");
-        factory.setMaxRequestSize("5120KB");
-        return factory.createMultipartConfig();
-    }
 }

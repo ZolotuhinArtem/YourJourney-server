@@ -193,6 +193,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public String updateAvatar(User user, MultipartFile multipartFile) throws DeadAccessTokenException{
         
+        
+        
+        return null;
     }
     
 }
