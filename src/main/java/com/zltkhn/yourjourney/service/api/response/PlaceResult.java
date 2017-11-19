@@ -40,6 +40,10 @@ public class PlaceResult {
     
     private Double lon;
     
+    private String country;
+    
+    private String city;
+    
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> photos;
 
@@ -130,8 +134,21 @@ public class PlaceResult {
     public void setPhotos(List<String> photos) {
         this.photos = photos;
     }
-    
-    
-    
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
     
 }

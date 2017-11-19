@@ -39,6 +39,10 @@ public class PlaceToPlaceResultConverterImpl implements PlaceToPlaceResultConver
         
         placeResult.setLon(place.getLon());
         
+        placeResult.setCountry(place.getCountry());
+        
+        placeResult.setCity(place.getCity());
+        
         Set<PlaceLike> likes = place.getLikes();
         placeResult.setLikes(likes != null ? likes.size() : 0L);
         

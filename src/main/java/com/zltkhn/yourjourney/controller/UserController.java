@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -63,7 +64,6 @@ public class UserController {
         return apiResult;
     }
     
-    //TODO PUT
     @RequestMapping(value = "/profile", method = RequestMethod.PUT) 
     public ApiResult editProfile(@RequestHeader(name = "token", required = true) String token,
             @RequestBody EditProfileForm editProfileForm) {
@@ -84,6 +84,14 @@ public class UserController {
         }
         
         return apiResult;
+    }
+    
+    @RequestMapping(value = "/profile/avatar", method = RequestMethod.POST) 
+    public ApiResult editAvatar(@RequestHeader(name = "token", required = true) String token,
+            @RequestParam("image") MultipartFile image) {
+        
+        return null;
+        
     }
     
     @RequestMapping(value = "/tourists/{id}")

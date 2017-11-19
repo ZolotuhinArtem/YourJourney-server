@@ -19,6 +19,7 @@ import com.zltkhn.yourjourney.service.api.response.ProfileResult;
 import com.zltkhn.yourjourney.service.api.converter.UserToProfileResultConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -186,6 +187,11 @@ public class UserServiceImpl implements UserService{
         }
         
         userRepository.save(user);
+        
+    }
+
+    @Override
+    public String updateAvatar(User user, MultipartFile multipartFile) throws DeadAccessTokenException{
         
     }
     

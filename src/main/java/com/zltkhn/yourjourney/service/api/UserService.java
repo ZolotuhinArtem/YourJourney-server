@@ -11,6 +11,7 @@ import com.zltkhn.yourjourney.form.EditProfileForm;
 import com.zltkhn.yourjourney.service.api.exception.DeadAccessTokenException;
 import com.zltkhn.yourjourney.service.api.response.ProfileResult;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -28,4 +29,6 @@ public interface UserService {
     ProfileResult getPojoByAccessToken(String accessToken) throws DeadAccessTokenException, UserNotFoundException;
     
     void editUser(String accessToken, EditProfileForm editProfileForm) throws DeadAccessTokenException, UserNotFoundException, InvalidFormException;
+    
+    String updateAvatar(User user, MultipartFile multipartFile) throws DeadAccessTokenException;
 }
