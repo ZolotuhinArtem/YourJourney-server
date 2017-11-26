@@ -9,11 +9,13 @@ import com.zltkhn.yourjourney.service.api.exception.InvalidFormException;
 import com.zltkhn.yourjourney.entities.Place;
 import com.zltkhn.yourjourney.entities.PlaceComment;
 import com.zltkhn.yourjourney.entities.PlaceLike;
+import com.zltkhn.yourjourney.entities.PlaceReport;
 import com.zltkhn.yourjourney.entities.User;
 import com.zltkhn.yourjourney.form.CommentForm;
 import com.zltkhn.yourjourney.form.validator.CommentFormValidator;
 import com.zltkhn.yourjourney.repository.PlaceCommentRepository;
 import com.zltkhn.yourjourney.repository.PlaceLikeRepository;
+import com.zltkhn.yourjourney.repository.PlaceReportRepository;
 import com.zltkhn.yourjourney.repository.PlaceRepository;
 import com.zltkhn.yourjourney.service.api.comparator.PlaceCommentComparator;
 import com.zltkhn.yourjourney.service.api.converter.PlaceCommentToPlaceCommentResultConverter;
@@ -25,6 +27,7 @@ import com.zltkhn.yourjourney.service.api.response.PlacesShortResult;
 import com.zltkhn.yourjourney.service.api.converter.PlaceToPlaceShortResultConverter;
 import com.zltkhn.yourjourney.service.api.exception.NotFoundException;
 import com.zltkhn.yourjourney.service.api.exception.PlaceNotFoundException;
+import com.zltkhn.yourjourney.service.api.exception.UserAlreadyReportedException;
 import com.zltkhn.yourjourney.service.api.response.PlaceCommentResult;
 import com.zltkhn.yourjourney.service.api.response.PlaceCommentsResult;
 import com.zltkhn.yourjourney.service.api.response.PlaceLikeResult;
@@ -51,6 +54,9 @@ public class PlaceServiceImpl implements PlaceService{
     
     @Autowired
     private PlaceLikeRepository placeLikeRepository;
+    
+    @Autowired
+    private PlaceReportRepository placeReportRepository;
     
     @Autowired
     private PlaceToPlaceShortResultConverter placeShortResultConverter;
@@ -190,9 +196,8 @@ public class PlaceServiceImpl implements PlaceService{
     @Override
     public WriteCommentResult writeComment(long placeId, User user, CommentForm commentForm) throws 
             PermissionDeniedException, PlaceNotFoundException, InvalidFormException {
-        if (user == null) {
-            throw new IllegalArgumentException("User must be not null");
-        }
+        
+        checkUser(user);
         
         if (commentFormValidator.validate(commentForm)) {
             
@@ -223,9 +228,7 @@ public class PlaceServiceImpl implements PlaceService{
     public void removeComment(long commentId, User user) throws 
             PermissionDeniedException, NotFoundException, IllegalArgumentException {
         
-        if (user == null) {
-            throw new IllegalArgumentException("User must be not null");
-        }
+        checkUser(user);
         
         PlaceComment placeComment = placeCommentRepository.findOne(commentId);
         
@@ -252,9 +255,7 @@ public class PlaceServiceImpl implements PlaceService{
     @Override
     public PlaceLikeResult like(long placeId, User user) throws PermissionDeniedException, NotFoundException, IllegalArgumentException {
         
-        if (user == null) {
-            throw new IllegalArgumentException("User must be not null");
-        }
+        checkUser(user);
         
         Place place = placeRepository.findOne(placeId);
         
@@ -288,6 +289,46 @@ public class PlaceServiceImpl implements PlaceService{
         }
         
     }
+
+    @Override
+    public void report(long placeId, User user) throws PermissionDeniedException, 
+            NotFoundException, IllegalArgumentException, UserAlreadyReportedException {
+        
+        checkUser(user);
+        
+        Place place = placeRepository.findOne(placeId);
+        
+        if (place != null) {
+            if (accessGranted(place, user)) {
+                
+                PlaceReport placeReport = placeReportRepository.findByPlaceAndUser(place, user);
+                
+                if (placeReport == null) {
+                    
+                    placeReport = new PlaceReport();
+                    placeReport.setPlace(place);
+                    placeReport.setUser(user);
+                    placeReport.setDate(System.currentTimeMillis());
+                    placeReportRepository.save(placeReport);
+                    
+                    //TODO check count reports for place
+                    
+                } else {
+                    throw new UserAlreadyReportedException();
+                }
+                
+            } else {
+                throw new PermissionDeniedException();
+            }
+        } else {
+            throw new NotFoundException();
+        }
+    }
     
+    public void checkUser(User user) throws IllegalArgumentException {
+        if (user == null) {
+            throw new IllegalArgumentException("User must be not null");
+        }
+    }
     
 }

@@ -15,6 +15,7 @@ import com.zltkhn.yourjourney.service.api.exception.InvalidFormException;
 import com.zltkhn.yourjourney.service.api.exception.NotFoundException;
 import com.zltkhn.yourjourney.service.api.exception.PermissionDeniedException;
 import com.zltkhn.yourjourney.service.api.exception.PlaceNotFoundException;
+import com.zltkhn.yourjourney.service.api.exception.UserAlreadyReportedException;
 import com.zltkhn.yourjourney.service.api.exception.UserNotFoundException;
 import com.zltkhn.yourjourney.service.api.response.ApiResult;
 import com.zltkhn.yourjourney.service.api.response.PlaceCommentsResult;
@@ -155,7 +156,33 @@ public class PlaceController {
         }
         
         return apiResult;
+    }
+    
+    @RequestMapping(value = "/places/{id}/report", method = RequestMethod.POST)
+    public ApiResult report(@PathVariable("id") long id, 
+            @RequestHeader(name = "token", required = true) String token) {
+               
+        ApiResult apiResult = new ApiResult(errorCodes.getSuccess());
+        try {
+            User user = userService.getByAccessToken(token);
+            
+            placeService.report(id, user);
+            
+        } catch (DeadAccessTokenException ex) {
+            Logger.getLogger(PlaceController.class.getName()).log(Level.SEVERE, null, ex);
+            apiResult.setCode(errorCodes.getInvalidOrOldAccessToken());
+        } catch (UserNotFoundException | NotFoundException | IllegalArgumentException ex) {
+            Logger.getLogger(PlaceController.class.getName()).log(Level.SEVERE, null, ex);
+            apiResult.setCode(errorCodes.getNotFound());
+        } catch (PermissionDeniedException ex) {
+            Logger.getLogger(PlaceController.class.getName()).log(Level.SEVERE, null, ex);
+            apiResult.setCode(errorCodes.getPermissionDenied());
+        } catch (UserAlreadyReportedException ex) {
+            Logger.getLogger(PlaceController.class.getName()).log(Level.SEVERE, null, ex);
+            apiResult.setCode(errorCodes.getYouAlreadyReportIt());
+        }
         
+        return apiResult;
     }
     
     @RequestMapping(value = "/places/{id}/comments", method = RequestMethod.GET)

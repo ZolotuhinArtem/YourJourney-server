@@ -5,8 +5,6 @@
  */
 package com.zltkhn.yourjourney.entities;
 
-import java.io.Serializable;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,12 +21,8 @@ import javax.validation.constraints.NotNull;
  * @author rtmss
  */
 @Entity
-@Table(name = "place_likes")
-public class PlaceLike implements Serializable{
-//    id BIGSERIAL,
-//    user_id BIGINT NOT NULL,
-//    place_id BIGINT NOT NULL,
-//    like_date BIGINT DEFAULT 0,
+@Table(name = "place_reports")
+public class PlaceReport {
     
     @Id
     @GeneratedValue(
@@ -42,17 +36,22 @@ public class PlaceLike implements Serializable{
     private Long id;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+    
+    
     @Column(
-            name = "like_date"
+            name = "report_time",
+            unique = true
     )
     private Long date;
+
+    public PlaceReport() {
+    }
 
     public Long getId() {
         return id;
@@ -60,14 +59,6 @@ public class PlaceLike implements Serializable{
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Place getPlace() {
@@ -78,6 +69,14 @@ public class PlaceLike implements Serializable{
         this.place = place;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Long getDate() {
         return date;
     }
@@ -85,36 +84,4 @@ public class PlaceLike implements Serializable{
     public void setDate(Long date) {
         this.date = date;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 19 * hash + Objects.hashCode(this.id);
-        hash = 19 * hash + Objects.hashCode(this.date);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final PlaceLike other = (PlaceLike) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.date, other.date)) {
-            return false;
-        }
-        return true;
-    }
-    
-    
-    
 }

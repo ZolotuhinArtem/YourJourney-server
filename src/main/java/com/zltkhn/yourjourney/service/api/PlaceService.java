@@ -11,6 +11,7 @@ import com.zltkhn.yourjourney.service.api.exception.InvalidFormException;
 import com.zltkhn.yourjourney.service.api.exception.NotFoundException;
 import com.zltkhn.yourjourney.service.api.exception.PermissionDeniedException;
 import com.zltkhn.yourjourney.service.api.exception.PlaceNotFoundException;
+import com.zltkhn.yourjourney.service.api.exception.UserAlreadyReportedException;
 import com.zltkhn.yourjourney.service.api.response.PlaceCommentsResult;
 import com.zltkhn.yourjourney.service.api.response.PlaceLikeResult;
 import com.zltkhn.yourjourney.service.api.response.PlaceResult;
@@ -63,5 +64,9 @@ public interface PlaceService {
     
     PlaceLikeResult like(long placeId, User user) throws
             PermissionDeniedException, NotFoundException, IllegalArgumentException;
+    
+    void report(long placeId, User user) throws
+            PermissionDeniedException, NotFoundException, IllegalArgumentException,
+            UserAlreadyReportedException;
     
 }

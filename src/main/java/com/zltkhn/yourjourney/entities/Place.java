@@ -79,6 +79,9 @@ public class Place {
     private Set<PlaceLike> likes;
     
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<PlaceReport> reports;
+    
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<PlacePhoto> photos;
     
     @PrePersist
@@ -183,9 +186,15 @@ public class Place {
     public void setLikes(Set<PlaceLike> likes) {
         this.likes = likes;
     }
-    
-    
 
+    public Set<PlaceReport> getReports() {
+        return reports;
+    }
+
+    public void setReports(Set<PlaceReport> reports) {
+        this.reports = reports;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 3;
