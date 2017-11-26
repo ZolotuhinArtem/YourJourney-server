@@ -20,7 +20,7 @@ public interface MultipartFileService {
      * @param multipartFile
      * @return index
      */
-    String save(MultipartFile multipartFile) throws EmptyFileException;
+    String save(MultipartFile multipartFile, String path) throws EmptyFileException;
     
     File get(String index);
     

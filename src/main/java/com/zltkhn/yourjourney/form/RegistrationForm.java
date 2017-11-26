@@ -59,5 +59,12 @@ public class RegistrationForm {
         user.setName(name);
         return user;
     }
+
+    @Override
+    public String toString() {
+        return "RegistrationForm{" + "name=" + name + ", email=" + email + ", password=" + password + '}';
+    }
+    
+    
     
 }

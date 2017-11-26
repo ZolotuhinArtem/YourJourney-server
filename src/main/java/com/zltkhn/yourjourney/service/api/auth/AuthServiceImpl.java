@@ -107,7 +107,7 @@ public class AuthServiceImpl implements AuthService{
         
         boolean validation = registrationFormValidator.validate(registrationForm);
         if (!validation) {
-            throw new IncorrectRegistrationFormException();
+            throw new IncorrectRegistrationFormException(registrationForm.toString());
         } else {
             User user = userRepository.findOneByEmail(registrationForm.getEmail());
             if (user != null) {

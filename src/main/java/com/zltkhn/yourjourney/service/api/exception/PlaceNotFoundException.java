@@ -3,29 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.zltkhn.yourjourney.service.api;
+package com.zltkhn.yourjourney.service.api.exception;
 
 /**
  *
  * @author rtmss
  */
-public class InvalidFormException extends Exception {
+public class PlaceNotFoundException extends Exception{
 
-    public InvalidFormException() {
+    public PlaceNotFoundException() {
     }
 
-    public InvalidFormException(String message) {
+    public PlaceNotFoundException(String message) {
         super(message);
     }
 
-    public InvalidFormException(String message, Throwable cause) {
+    public PlaceNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public InvalidFormException(Throwable cause) {
+    public PlaceNotFoundException(Throwable cause) {
         super(cause);
     }
-    
+ 
     
     
 }

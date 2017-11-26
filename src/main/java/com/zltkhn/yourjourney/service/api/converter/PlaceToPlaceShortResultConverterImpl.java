@@ -5,7 +5,7 @@
  */
 package com.zltkhn.yourjourney.service.api.converter;
 
-import com.zltkhn.yourjourney.entities.Comment;
+import com.zltkhn.yourjourney.entities.PlaceComment;
 import com.zltkhn.yourjourney.entities.Place;
 import com.zltkhn.yourjourney.entities.PlaceLike;
 import com.zltkhn.yourjourney.entities.PlacePhoto;
@@ -40,7 +40,7 @@ public class PlaceToPlaceShortResultConverterImpl implements PlaceToPlaceShortRe
         Set<PlaceLike> likes = place.getLikes();
         placeShortResult.setLikes(likes != null ? likes.size() : 0L);
         
-        Set<Comment> comments = place.getComments();
+        Set<PlaceComment> comments = place.getComments();
         placeShortResult.setComments(comments != null ? comments.size() : 0L);
         
         placeShortResult.setIsPrivate(place.getIsPrivate());

@@ -15,7 +15,7 @@ public interface ErrorCodes {
     
     int getInvalidOrOldAccessToken();
     
-    int getPermissionDenoed();
+    int getPermissionDenied();
     
     int getNotFound();
     

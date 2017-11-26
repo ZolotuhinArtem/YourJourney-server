@@ -69,7 +69,7 @@ public class Place {
     private User user;
     
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Comment> comments;
+    private Set<PlaceComment> comments;
     
     @NotNull
     @Column(name = "private")
@@ -160,11 +160,11 @@ public class Place {
         this.user = user;
     }
 
-    public Set<Comment> getComments() {
+    public Set<PlaceComment> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments) {
+    public void setComments(Set<PlaceComment> comments) {
         this.comments = comments;
     }
 

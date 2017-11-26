@@ -101,7 +101,7 @@ public class User implements Serializable{
     
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Comment> comment;
+    private Set<PlaceComment> comment;
     
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -187,11 +187,11 @@ public class User implements Serializable{
         this.avatar = avatar;
     }
 
-    public Set<Comment> getComment() {
+    public Set<PlaceComment> getComment() {
         return comment;
     }
 
-    public void setComment(Set<Comment> comment) {
+    public void setComment(Set<PlaceComment> comment) {
         this.comment = comment;
     }
 

@@ -25,7 +25,7 @@ public class ErrorCodesImpl implements ErrorCodes{
     }
 
     @Override
-    public int getPermissionDenoed() {
+    public int getPermissionDenied() {
         return 2;
     }
 

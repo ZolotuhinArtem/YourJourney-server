@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "place_comments")
-public class Comment implements Serializable{
+public class PlaceComment implements Serializable{
     
     @Id
     @GeneratedValue(
@@ -114,7 +114,7 @@ public class Comment implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Comment other = (Comment) obj;
+        final PlaceComment other = (PlaceComment) obj;
         if (!Objects.equals(this.body, other.body)) {
             return false;
         }

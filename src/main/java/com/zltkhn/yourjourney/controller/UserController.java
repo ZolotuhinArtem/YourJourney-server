@@ -7,7 +7,7 @@ package com.zltkhn.yourjourney.controller;
 
 import com.zltkhn.yourjourney.form.EditProfileForm;
 import com.zltkhn.yourjourney.service.api.ErrorCodes;
-import com.zltkhn.yourjourney.service.api.InvalidFormException;
+import com.zltkhn.yourjourney.service.api.exception.InvalidFormException;
 import com.zltkhn.yourjourney.service.api.UserService;
 import com.zltkhn.yourjourney.service.api.exception.DeadAccessTokenException;
 import com.zltkhn.yourjourney.service.api.exception.UserNotFoundException;

@@ -25,12 +25,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class MultipartFileServiceImpl implements MultipartFileService{
 
     @Override
-    public String save(MultipartFile multipartFile) throws EmptyFileException{
+    public String save(MultipartFile multipartFile, String path) throws EmptyFileException{
         if (multipartFile.isEmpty()) {
             throw new EmptyFileException();
         }
         
-        String filename = generateFilename();
+        String filename = path;
         File file = new File(filename);
         if (!file.exists()) {
             try {
@@ -63,10 +63,6 @@ public class MultipartFileServiceImpl implements MultipartFileService{
     @Override
     public File get(String index) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private String generateFilename() {
-        return Long.toString(System.currentTimeMillis()) + (new Random(System.currentTimeMillis()).nextLong());
     }
     
 }

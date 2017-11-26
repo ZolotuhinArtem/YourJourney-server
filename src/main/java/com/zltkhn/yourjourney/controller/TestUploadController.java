@@ -37,13 +37,13 @@ public class TestUploadController {
     @RequestMapping(value = "/test_upload", method = RequestMethod.POST) 
     public String uploadPost(@RequestParam("image") MultipartFile image, ModelMap map) {
         
-        try {
-            String index = multipartFileService.save(image);
-            map.put("message", index);
-        } catch (EmptyFileException ex) {
-            Logger.getLogger(TestUploadController.class.getName()).log(Level.SEVERE, null, ex);
-            map.put("message", "Sad :(");
-        }
+//        try {
+//            String index = multipartFileService.save(image);
+//            map.put("message", index);
+//        } catch (EmptyFileException ex) {
+//            Logger.getLogger(TestUploadController.class.getName()).log(Level.SEVERE, null, ex);
+//            map.put("message", "Sad :(");
+//        }
         
         return "test_upload";
         

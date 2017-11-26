@@ -5,6 +5,7 @@
  */
 package com.zltkhn.yourjourney.service.api;
 
+import com.zltkhn.yourjourney.service.api.exception.InvalidFormException;
 import com.zltkhn.yourjourney.service.api.exception.UserNotFoundException;
 import com.zltkhn.yourjourney.entities.User;
 import com.zltkhn.yourjourney.form.EditProfileForm;

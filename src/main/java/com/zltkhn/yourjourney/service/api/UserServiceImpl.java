@@ -5,6 +5,7 @@
  */
 package com.zltkhn.yourjourney.service.api;
 
+import com.zltkhn.yourjourney.service.api.exception.InvalidFormException;
 import com.zltkhn.yourjourney.entities.User;
 import com.zltkhn.yourjourney.entities.UserToken;
 import com.zltkhn.yourjourney.form.EditProfileForm;
@@ -18,6 +19,8 @@ import com.zltkhn.yourjourney.service.api.exception.UserNotFoundException;
 import com.zltkhn.yourjourney.service.api.response.ProfileResult;
 import com.zltkhn.yourjourney.service.api.converter.UserToProfileResultConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author rtmss
  */
 @Service
+@PropertySource({"classpath:/app.properties"})
 public class UserServiceImpl implements UserService{
 
     @Autowired
@@ -45,6 +49,9 @@ public class UserServiceImpl implements UserService{
     
     @Autowired
     private Crypter crypter;
+    
+    @Autowired
+    private Environment env;
     
     @Override
     public User getById(Long id) throws UserNotFoundException {

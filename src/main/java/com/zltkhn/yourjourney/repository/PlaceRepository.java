@@ -6,8 +6,11 @@
 package com.zltkhn.yourjourney.repository;
 
 import com.zltkhn.yourjourney.entities.Place;
+import com.zltkhn.yourjourney.entities.PlaceComment;
 import com.zltkhn.yourjourney.entities.User;
 import java.util.Set;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -27,5 +30,8 @@ public interface PlaceRepository extends JpaRepository<Place, Long>{
     
     @Query("SELECT p FROM Place p WHERE LOWER(p.country) = LOWER(?1) AND LOWER(p.city) = LOWER(?2) AND p.isPrivate = ?3")
     Set<Place> findPlacesByCountryAndCityAndPrivate(String country, String city, Boolean isPrivate);
+ 
+    @Query("SELECT c FROM PlaceComment c WHERE c.place = ?1")
+    Set<PlaceComment> findComments(Place place);
     
 }
