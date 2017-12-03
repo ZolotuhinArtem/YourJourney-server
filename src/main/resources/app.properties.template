@@ -11,4 +11,4 @@ hibernate.enable_lazy_load_no_trans=true
 
 crypter.soil=
 
-storage.photos=
+storage=

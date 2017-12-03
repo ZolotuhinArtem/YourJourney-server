@@ -16,19 +16,15 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.sql.DataSource;
 import java.util.Properties;
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletRegistration;
-import javax.servlet.annotation.MultipartConfig;
-import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 @Configuration
 @EnableJpaRepositories(basePackages = {"com.zltkhn.yourjourney.repository"})
-@ComponentScan(basePackages = {"com.zltkhn.yourjourney.entities"})
+@ComponentScan(basePackages = {"com.zltkhn.yourjourney.entities", "com.zltkhn.yourjourney.config.provider"})
 @PropertySource({"classpath:/app.properties"})
 @Import({ToolConfig.class, ValidatorConfig.class, ServiceConfig.class})
 public class RootConfig {
+    
     @Autowired
     private Environment env;
     

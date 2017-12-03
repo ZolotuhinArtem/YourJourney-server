@@ -9,9 +9,9 @@ import com.zltkhn.yourjourney.service.api.exception.InvalidFormException;
 import com.zltkhn.yourjourney.service.api.exception.UserNotFoundException;
 import com.zltkhn.yourjourney.entities.User;
 import com.zltkhn.yourjourney.form.EditProfileForm;
+import com.zltkhn.yourjourney.service.api.exception.ContentTypeOfMultipartFileIsNotImageException;
 import com.zltkhn.yourjourney.service.api.exception.DeadAccessTokenException;
 import com.zltkhn.yourjourney.service.api.response.ProfileResult;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -31,5 +31,19 @@ public interface UserService {
     
     void editUser(String accessToken, EditProfileForm editProfileForm) throws DeadAccessTokenException, UserNotFoundException, InvalidFormException;
     
-    String updateAvatar(User user, MultipartFile multipartFile) throws DeadAccessTokenException;
+    /**
+     * 
+     * @param user
+     * 
+     * @param multipartFile - It is image. If it is png then it will be 
+     * converted to jpg. If it is null when avatar will delete
+     * 
+     * @return relative (without base url) link to picture
+     * 
+     * @throws IllegalArgumentException - throws when user is null
+     * @throws ContentTypeOfMultipartFileIsNotImageException - throws when 
+     * multipartFile is not image
+     */
+    String updateAvatar(User user, MultipartFile multipartFile) throws IllegalArgumentException,
+            ContentTypeOfMultipartFileIsNotImageException;
 }

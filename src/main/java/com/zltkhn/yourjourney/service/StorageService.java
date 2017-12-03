@@ -5,23 +5,26 @@
  */
 package com.zltkhn.yourjourney.service;
 
+import com.zltkhn.yourjourney.service.api.exception.NotFoundException;
 import com.zltkhn.yourjourney.service.exception.EmptyFileException;
-import java.io.File;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
  * @author rtmss
  */
-public interface MultipartFileService {
+public interface StorageService {
     
     /**
      * 
      * @param multipartFile
-     * @return index
+     * @param fileName - it is not path, it is just file name like avatar.png, music.mp3 and other
+     * @throws EmptyFileException
      */
-    String save(MultipartFile multipartFile, String path) throws EmptyFileException;
+    void save(MultipartFile multipartFile, String fileName) throws EmptyFileException;
     
-    File get(String index);
+    byte[] get(String index) throws NotFoundException;
+    
+    void remove(String name);
     
 }

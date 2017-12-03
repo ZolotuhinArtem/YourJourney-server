@@ -18,18 +18,21 @@ import com.zltkhn.yourjourney.service.api.exception.DeadAccessTokenException;
 import com.zltkhn.yourjourney.service.api.exception.UserNotFoundException;
 import com.zltkhn.yourjourney.service.api.response.ProfileResult;
 import com.zltkhn.yourjourney.service.api.converter.UserToProfileResultConverter;
+import com.zltkhn.yourjourney.service.api.exception.ContentTypeOfMultipartFileIsNotImageException;
+import com.zltkhn.yourjourney.service.exception.EmptyFileException;
+import com.zltkhn.yourjourney.tools.ContentTypeRecognizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import com.zltkhn.yourjourney.service.StorageService;
 
 /**
  *
  * @author rtmss
  */
 @Service
-@PropertySource({"classpath:/app.properties"})
 public class UserServiceImpl implements UserService{
 
     @Autowired
@@ -51,7 +54,11 @@ public class UserServiceImpl implements UserService{
     private Crypter crypter;
     
     @Autowired
-    private Environment env;
+    private StorageService storageService;
+    
+    @Autowired
+    private ContentTypeRecognizer contentTypeRecognizer;
+    
     
     @Override
     public User getById(Long id) throws UserNotFoundException {
@@ -198,11 +205,73 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String updateAvatar(User user, MultipartFile multipartFile) throws DeadAccessTokenException{
+    public String updateAvatar(User user, MultipartFile multipartFile) throws IllegalArgumentException,
+            ContentTypeOfMultipartFileIsNotImageException{
+        
+        if (user == null) {
+            throw new IllegalArgumentException("User must be not null");
+        }
         
         
         
+        String oldPhotoName = user.getAvatar();
+        
+        
+        if (multipartFile != null) {
+            
+            if (contentTypeRecognizer.recognize(multipartFile.getContentType()) == ContentTypeRecognizer.TYPE_IMAGE){
+                
+                String fileName = generateAvatarName(user, multipartFile);                
+                try {
+                    storageService.save(multipartFile, fileName);
+                    
+                    user.setAvatar(fileName);
+                    
+                    userRepository.save(user);
+                    
+                    storageService.remove(oldPhotoName);
+                    
+                    return fileName;
+                    
+                } catch (EmptyFileException ex) {
+                    Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    throw new IllegalArgumentException("file is empty");
+                }
+                    
+            } else {
+                throw new ContentTypeOfMultipartFileIsNotImageException();
+            }
+        
+        } else {
+            user.setAvatar("");
+            userRepository.save(user);
+            storageService.remove(oldPhotoName);
+        }
         return null;
+    }
+    
+    /**
+     * 
+     * @param user must be not null
+     * @param multipartFile must be not null
+     * @return 
+     */
+    private String generateAvatarName(User user, MultipartFile multipartFile) {
+        
+        String name = crypter.crypt(System.currentTimeMillis() + "")
+                + crypter.crypt(System.nanoTime() + "" + user.getId());
+        
+        String ext = "";
+        
+        if (multipartFile.getContentType().toLowerCase().contains("jpeg")) {
+            ext = ".jpg";
+        } else {
+            if (multipartFile.getContentType().toLowerCase().contains("png")) {
+                ext = ".png";
+            }
+        }
+        
+        return name + ext;
     }
     
 }
